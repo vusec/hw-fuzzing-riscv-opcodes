@@ -10,6 +10,8 @@ import collections
 import yaml
 import sys
 
+from cpp_gen import generate_cpp
+
 pp = pprint.PrettyPrinter(indent=2)
 logging.basicConfig(level=logging.INFO, format='%(levelname)s:: %(message)s')
 
@@ -942,7 +944,7 @@ if __name__ == "__main__":
     print(f'Running with args : {sys.argv}')
 
     extensions = sys.argv[1:]
-    for i in ['-c','-latex','-chisel','-sverilog','-rust', '-go', '-spinalhdl']:
+    for i in ['-c','-latex','-chisel','-sverilog','-rust', '-go', '-spinalhdl', '-cpp']:
         if i in extensions:
             extensions.remove(i)
     print(f'Extensions selected : {extensions}')
@@ -964,6 +966,10 @@ if __name__ == "__main__":
                                     ])
         instr_dict_c = collections.OrderedDict(sorted(instr_dict_c.items()))
         make_c(instr_dict_c)
+        logging.info('encoding.out.h generated successfully')
+
+    if '-cpp' in sys.argv[1:]:
+        generate_cpp(instr_dict)
         logging.info('encoding.out.h generated successfully')
 
     if '-chisel' in sys.argv[1:]:
