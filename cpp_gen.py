@@ -20,7 +20,6 @@ def emit_inst(out, name : str, inst):
     encoding = inst["encoding"] # type: str
     vars = inst["variable_fields"]
     extension = inst["extension"]
-    print(inst)
     out.write("  const Instruction " + get_inst_name(name) + " = ")
     out.write("Instruction(")
     out.write('"' + name + '", ')
