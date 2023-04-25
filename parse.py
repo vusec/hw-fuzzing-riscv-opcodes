@@ -969,7 +969,7 @@ if __name__ == "__main__":
         logging.info('encoding.out.h generated successfully')
 
     if '-cpp' in sys.argv[1:]:
-        generate_cpp(instr_dict)
+        generate_cpp(instr_dict, extensions)
         logging.info('encoding.out.h generated successfully')
 
     if '-chisel' in sys.argv[1:]:
