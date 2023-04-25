@@ -20,8 +20,8 @@ def emit_inst(out, name : str, inst):
     encoding = inst["encoding"] # type: str
     vars = inst["variable_fields"]
     extension = inst["extension"]
-    out.write("  const Instruction " + get_inst_name(name) + " = ")
-    out.write("Instruction(")
+    out.write("  const InstructionTemplate " + get_inst_name(name) + " = ")
+    out.write("InstructionTemplate(")
     out.write('"' + name + '", ')
     out.write(inst["match"] + "U, ")
 
@@ -33,8 +33,8 @@ def emit_inst(out, name : str, inst):
     out.write(");\n")
 
 def emit_arg(out, name, arg):
-    out.write("  const Argument " + name + " = ")
-    out.write("Argument(")
+    out.write("  const ArgumentSpec " + name + " = ")
+    out.write("ArgumentSpec(")
     out.write(str(arg[0]))
     out.write(", ")
     out.write(str(arg[1]))
@@ -63,7 +63,7 @@ def generate_cpp(insts, extensions):
                 num_insts += 1
                 emit_inst(out, i, insts[i])
 
-        out.write("  const std::array<Instruction, " + str(num_insts))
+        out.write("  const std::array<InstructionTemplate, " + str(num_insts))
         out.write("> all = {\n")
         for i in insts:
             if extension in insts[i]["extension"]:
