@@ -35,6 +35,7 @@ def emit_inst(out, name : str, inst):
 def emit_arg(out, name, arg):
     out.write("  const ArgumentSpec " + name + " = ")
     out.write("ArgumentSpec(")
+    out.write('"' + name + '", ')
     out.write(str(arg[0]))
     out.write(", ")
     out.write(str(arg[1]))
@@ -55,6 +56,8 @@ def generate_cpp(insts, extensions):
 
     out.write("} // namespace Args\n\n")
 
+    all_instructions = []
+
     for extension in extensions:
         out.write("namespace " + extension + " {\n")
         num_insts = 0
@@ -62,7 +65,8 @@ def generate_cpp(insts, extensions):
             if extension in insts[i]["extension"]:
                 num_insts += 1
                 emit_inst(out, i, insts[i])
-
+                name = get_inst_name(i)
+                all_instructions.append(f"{extension}::{name}")
         out.write("  const std::array<InstructionTemplate, " + str(num_insts))
         out.write("> all = {\n")
         for i in insts:
@@ -71,6 +75,15 @@ def generate_cpp(insts, extensions):
         out.write("  };\n")
 
         out.write("}\n")
+
+
+
+    out.write("const std::array<InstructionTemplate, " + str(len(all_instructions)))
+    out.write("> all_instructions = {\n")
+
+    for inst in all_instructions:
+        out.write("  " + inst + ",\n")
+    out.write("};\n")
 
     out.write("} // namespace RISCV\n")
     out.close()
