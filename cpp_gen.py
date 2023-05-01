@@ -24,6 +24,7 @@ def emit_inst(out, name : str, inst):
     out.write("InstructionTemplate(")
     out.write('"' + name + '", ')
     out.write(inst["match"] + "U, ")
+    out.write(inst["mask"] + "U, ")
 
     out.write("{")
     for arg in inst["variable_fields"]:
