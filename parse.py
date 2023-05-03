@@ -11,6 +11,7 @@ import yaml
 import sys
 
 from cpp_gen import generate_cpp
+from rust_gen import generate_rust
 
 pp = pprint.PrettyPrinter(indent=2)
 logging.basicConfig(level=logging.INFO, format='%(levelname)s:: %(message)s')
@@ -944,7 +945,7 @@ if __name__ == "__main__":
     print(f'Running with args : {sys.argv}')
 
     extensions = sys.argv[1:]
-    for i in ['-c','-latex','-chisel','-sverilog','-rust', '-go', '-spinalhdl', '-cpp']:
+    for i in ['-c','-latex','-chisel','-sverilog','-rust', '-go', '-spinalhdl', '-cpp', '-rust_mutator']:
         if i in extensions:
             extensions.remove(i)
     print(f'Extensions selected : {extensions}')
@@ -971,6 +972,10 @@ if __name__ == "__main__":
     if '-cpp' in sys.argv[1:]:
         generate_cpp(instr_dict, extensions)
         logging.info('encoding.out.h generated successfully')
+
+    if '-rust_mutator' in sys.argv[1:]:
+        generate_rust(instr_dict, extensions)
+        logging.info('raw_instructions.rs generated successfully')
 
     if '-chisel' in sys.argv[1:]:
         make_chisel(instr_dict)
