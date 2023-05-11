@@ -49,7 +49,7 @@ def emit_inst(out, name : str, inst):
     op_index = 1
     for arg in args:
         out.write("operand" + str(op_index) + ": ")
-        full_name = "Some(crate::instructions::riscv::args::" + get_arg_name(arg) + ")"
+        full_name = "Some(&crate::instructions::riscv::args::" + get_arg_name(arg) + ")"
         if arg == none_name:
             full_name = none_name
         out.write(full_name + ", ")
@@ -88,6 +88,20 @@ def generate_rust(insts, extensions):
         out.write("];\n")
 
         out.write("}\n")
+
+    out.write("""
+    use crate::instructions::InstructionTemplate;
+    pub fn all() -> Vec<&'static InstructionTemplate> {
+        let mut result = Vec::<&'static InstructionTemplate>::new();
+    """)
+
+    for extension in extensions:
+        out.write(" " * 8 + f"result.append(&mut {extension}::INSTS.to_vec());")
+
+    out.write("""
+        result
+    }
+    """)
 
     out.write("}\n")
     out.close()
